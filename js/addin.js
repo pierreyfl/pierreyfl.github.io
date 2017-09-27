@@ -99,7 +99,7 @@ geotab.addin.geotabRewind = function (api) {
                 var current = getCurrentValue(),
                     offset = current.getTimezoneOffset();
 
-                setDateInput(new Date(current.setMinutes(current.getMinutes() + 1)));
+                setDateInput(new Date(current.setMinutes(current.getMinutes() + 1 + offset)));
             });
 
             document.getElementById("forward5").addEventListener("click", function (event) {
