@@ -99,7 +99,7 @@
                     dateTimeInputEnd.style.display = "block";
                     dateTimeInputEnd.value = moment(fullTrip.stop).format("lll");
                     if (fullTrip) {
-                        getCustomLogs(fullTrip, function (logs) {
+                        getLogs(fullTrip, function (logs) {
                             drawTrip(logs);
                         });
                     }
@@ -109,12 +109,12 @@
                   
                     var selectedTripId = tripsSelect.value,
                         fullTrip = tripsById[selectedTripId]; 
-                    console.log(this); 
-                    //if (fullTrip) {
-                        //getCustomLogs(fullTrip, dateTimeInput, dateTimeInputEnd, function (logs) {
-                          //  drawTrip(logs);
-                          //});
-                    //}
+                    //console.log(this); 
+                    if (fullTrip) {
+                        getCustomLogs(fullTrip, dateTimeInput, dateTimeInputEnd, function (logs) {
+                            drawTrip(logs);
+                          });
+                    }
                 }, true);
                 
                 
