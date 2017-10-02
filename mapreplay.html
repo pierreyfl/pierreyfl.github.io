@@ -91,6 +91,7 @@
                     var selectedTripId = this.value,
                         fullTrip = tripsById[selectedTripId]; 
                     dateTimeInput.style.display = "block";
+                    dateTimeInput.value = fullTrip.start;
                     if (fullTrip) {
                         getLogs(fullTrip, function (logs) {
                             drawTrip(logs);
