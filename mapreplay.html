@@ -99,7 +99,7 @@
                     dateTimeInputEnd.style.display = "block";
                     dateTimeInputEnd.value = moment(fullTrip.stop).format("lll");
                     if (fullTrip) {
-                        getLogs(fullTrip, function (logs) {
+                        getCustomLogs(fullTrip, function (logs) {
                             drawTrip(logs);
                         });
                     }
