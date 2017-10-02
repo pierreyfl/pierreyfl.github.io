@@ -105,11 +105,12 @@
                     }
                 }, true);
                 // Handle when start date is edited
-                dateTimeInput.addEventListener("change", function (e) {
+                                dateTimeInput.addEventListener("change", function (e) {
                   
-                  getLogs(fullTrip, dateTimeInput, dateTimeInputEnd, function (logs) {
+                  getCustomLogs(fullTrip, dateTimeInput, dateTimeInputEnd, function (logs) {
                     drawTrip(logs);
                   );
+                  }
                 }, true);
                 
                 
