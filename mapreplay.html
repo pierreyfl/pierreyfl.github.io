@@ -18,6 +18,9 @@
                 <div class="pure-g">
                     <select id="mapreplay-options-trips" class="pure-u-1-1" style="display: none;"></select>
                 </div>
+                <div class="pure-g">
+                    <input id="mapreplay-options-start-date" class="pure-u-1-1" style="display: none;"></select>
+                </div>
             </fieldset>
         </form>
     </div>
@@ -40,27 +43,19 @@
         geotab.addin.mapreplay = function(api, state) {
             var map;
             var replayLayer;
-
             var vehicles;
-
             var tripsById = {};
-
             var initializeMap = function () {
                 // Initialize the map container
-
                 map = new L.Map("mapreplay-map").on("load", function () {
                     setTimeout(function () {
                         map.invalidateSize();
                     }, 500);
                     document.getElementById("mapreplay-options").style.display = "block";
                 }).setView([43.436884, -79.711760], 15);
-
                 // Add a layer to put the replay on
-
                 replayLayer = L.layerGroup().addTo(map);
-
                 // Add the map tiles layer
-
                 L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
                     subdomains: "abc",
                     type: "osm",
@@ -68,40 +63,34 @@
                     maxZoom: 18
                 }).addTo(map);
             };
-
             var initializeEventHandlers = function () {
                 var vehicleSelect = document.getElementById("mapreplay-options-vehicle"),
                     tripsSelect = document.getElementById("mapreplay-options-trips");
-
+                    dateTimeInput = document.getElementById("mapreplay-options-start-date");
                 // Handle when a vehicle is selected
-
                 vehicleSelect.addEventListener("change", function (e) {
                     var selectedVehicleId = this.value;
                     tripsSelect.innerHTML = "";
                     if (selectedVehicleId) {
-
                         // Add a loading option
-
                         tripsSelect.appendChild((function () {
                             var loadingOpt = document.createElement("option");
                             loadingOpt.textContent = "Loading...";
                             return loadingOpt;
                         })());
                         tripsSelect.style.display = "block";
-
                         // Get trips for this vehicle, and populate the selection box
-
                         getTrips(selectedVehicleId, function (trips) {
                             populateTripsSelect(trips);
                         });
                     }
                 }, true);
-
                 // Handle when a trip is selected
-
                 tripsSelect.addEventListener("change", function (e) {
+                  
                     var selectedTripId = this.value,
                         fullTrip = tripsById[selectedTripId]; 
+                    dateTimeInput.style.display = "block";
                     if (fullTrip) {
                         getLogs(fullTrip, function (logs) {
                             drawTrip(logs);
@@ -109,7 +98,6 @@
                     }
                 }, true);
             };
-
             var reset = function () {
                 var tripsSelect = document.getElementById("mapreplay-options-trips"),
                     speedDisplay = document.getElementById("mapreplay-dashboard-speed"),
@@ -124,7 +112,6 @@
                     timeDisplay.textContent = moment().format("lll");
                 }
             };
-
             var getVehicles = function (finishedCallback) {
                 api.call("Get", {
                     typeName: "Device",
@@ -143,7 +130,6 @@
                     alert(errorString);
                 });
             };
-
             var getTrips = function (vehicleId, finishedCallback) {
                 var lastWeek = new Date();
                 lastWeek.setDate(lastWeek.getDate() - 7);
@@ -167,7 +153,6 @@
                     alert(errorString); 
                 });
             };
-
             var getLogs = function (trip, finishedCallback) {
                 api.call("Get", {
                     typeName: "LogRecord",
@@ -184,7 +169,6 @@
                     alert(errorString);
                 })
             };
-
             var populateVehicleSelect = function () {
                 var vehicleSelect = document.getElementById("mapreplay-options-vehicle");
                 vehicleSelect.appendChild((function () {
@@ -204,7 +188,6 @@
                     });
                 }
             };
-
             var populateTripsSelect = function (trips) {
                 var tripsSelect = document.getElementById("mapreplay-options-trips");
                 tripsSelect.innerHTML = "";
@@ -228,27 +211,19 @@
                     tripsSelect.style.display = "none";
                 }
             };
-
             var updateDashboardTimeout;
             var updateDashboard = function (logs, durations) {
-
                 // We're done this recursive call when all the logs have been displayed on the dashboard
-
                 if (!logs.length) {
                     return;
                 }
-
                 // Reset the display if another trip had been selected
-
                 if (updateDashboardTimeout) {
                     clearTimeout(updateDashboardTimeout);
                 }
-
                 var speedDisplay = document.getElementById("mapreplay-dashboard-speed"),
                     timeDisplay = document.getElementById("mapreplay-dashboard-time");
-
                 // Update the display with the next log
-
                 var log = logs.shift();
                 if (speedDisplay) {
                     speedDisplay.textContent = Math.round(log.speed);
@@ -256,15 +231,12 @@
                 if (timeDisplay) {
                     timeDisplay.textContent = moment(log.dateTime).format('lll');
                 }
-
                 // Add a timeout corresponding to the duration between the logs until we display the next log
-
                 var waitDuration = durations.shift() || 0;
                 updateDashboardTimeout = setTimeout(function () {
                     updateDashboard(logs, durations);
                 }, waitDuration);
             };
-
             var drawTrip = function (logs) {
                 replayLayer.clearLayers();
                 var line = [],
@@ -278,30 +250,22 @@
                     }
                     lastLogDate = log.dateTime;
                 });
-
                 // Adds the trip line as a layer
-
                 replayLayer.addLayer(new L.polyline(line, {
                     color: "red",
                     weight: 7,
                     opacity: 0.5,
                     smoothFactor: 1
                 }));
-
                 // Adds a moving marker to the layer
-
                 var movingMarker = L.Marker.movingMarker(line, durations);
                 replayLayer.addLayer(movingMarker);
                 movingMarker.start();
-
                 // Update the dashboard as the trip progresses
                 updateDashboard(logs.slice(0), durations.slice(0));
-
                 // Fit the map to the selected trip
-
                 map.fitBounds(line);
             };
-
             return {
                 /*
                  * Page lifecycle method: initialize is called once when the addin first starts
@@ -311,7 +275,6 @@
                 initialize: function(api, state, callback) {
                     // Initialize the map
                     initializeMap();
-
                     // Must be called to let the app know that we've initialized the addon
                     getVehicles(callback);
                 },
