@@ -104,6 +104,15 @@
                         });
                     }
                 }, true);
+                // Handle when start date is edited
+                dateTimeInput.addEventListener("change", function (e) {
+                  
+                  getLogs(fullTrip, dateTimeInput, dateTimeInputEnd, function (logs) {
+                    drawTrip(logs);
+                  );
+                }, true);
+                
+                
             };
             var reset = function () {
                 var tripsSelect = document.getElementById("mapreplay-options-trips"),
@@ -169,6 +178,22 @@
                         },
                         fromDate: trip.start,
                         toDate: trip.stop
+                    }
+                }, function (logs) {
+                    finishedCallback(logs);
+                }, function (errorString) {
+                    alert(errorString);
+                })
+            };
+            var getCustomLogs = function (trip, start, end, finishedCallback) {
+                api.call("Get", {
+                    typeName: "LogRecord",
+                    search: {
+                        deviceSearch: {
+                            id: trip.device.id
+                        },
+                        fromDate: start.value,
+                        toDate: end.value
                     }
                 }, function (logs) {
                     finishedCallback(logs);
