@@ -109,11 +109,12 @@
                   
                     var selectedTripId = tripsSelect.value,
                         fullTrip = tripsById[selectedTripId]; 
-                    if (fullTrip) {
-                        getCustomLogs(fullTrip, dateTimeInput, dateTimeInputEnd, function (logs) {
-                            drawTrip(logs);
-                        });
-                    }
+                    console.log(this); 
+                    //if (fullTrip) {
+                        //getCustomLogs(fullTrip, dateTimeInput, dateTimeInputEnd, function (logs) {
+                          //  drawTrip(logs);
+                          //});
+                    //}
                 }, true);
                 
                 
