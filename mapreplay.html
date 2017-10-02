@@ -198,8 +198,8 @@
                         deviceSearch: {
                             id: trip.device.id
                         },
-                        fromDate: start.value,
-                        toDate: end.value
+                        fromDate: moment(start.value).toDate(),
+                        toDate: moment(end.value).toDate()
                     }
                 }, function (logs) {
                     finishedCallback(logs);
