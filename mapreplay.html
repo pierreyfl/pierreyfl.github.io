@@ -105,12 +105,15 @@
                     }
                 }, true);
                 // Handle when start date is edited
-                                dateTimeInput.addEventListener("change", function (e) {
+                dateTimeInput.addEventListener("change", function (e) {
                   
-                  getCustomLogs(fullTrip, dateTimeInput, dateTimeInputEnd, function (logs) {
-                    drawTrip(logs);
-                  );
-                  }
+                    var selectedTripId = tripsSelect.value,
+                        fullTrip = tripsById[selectedTripId]; 
+                    if (fullTrip) {
+                        getCustomLogs(fullTrip, dateTimeInput, dateTimeInputEnd, function (logs) {
+                            drawTrip(logs);
+                        });
+                    }
                 }, true);
                 
                 
