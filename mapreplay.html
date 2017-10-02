@@ -21,6 +21,9 @@
                 <div class="pure-g">
                     <input id="mapreplay-options-start-date" class="pure-u-1-1" style="display: none;"></select>
                 </div>
+                <div class="pure-g">
+                    <input id="mapreplay-options-end-date" class="pure-u-1-1" style="display: none;"></select>
+                </div>
             </fieldset>
         </form>
     </div>
@@ -67,6 +70,7 @@
                 var vehicleSelect = document.getElementById("mapreplay-options-vehicle"),
                     tripsSelect = document.getElementById("mapreplay-options-trips");
                     dateTimeInput = document.getElementById("mapreplay-options-start-date");
+                    dateTimeInputEnd = document.getElementById("mapreplay-options-end-date");
                 // Handle when a vehicle is selected
                 vehicleSelect.addEventListener("change", function (e) {
                     var selectedVehicleId = this.value;
@@ -92,6 +96,8 @@
                         fullTrip = tripsById[selectedTripId]; 
                     dateTimeInput.style.display = "block";
                     dateTimeInput.value = moment(fullTrip.start).format("lll");
+                    dateTimeInputEnd.style.display = "block";
+                    dateTimeInputEnd.value = moment(fullTrip.stop).format("lll");
                     if (fullTrip) {
                         getLogs(fullTrip, function (logs) {
                             drawTrip(logs);
