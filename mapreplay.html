@@ -113,7 +113,21 @@
                     if (fullTrip) {
                         getCustomLogs(fullTrip, dateTimeInput, dateTimeInputEnd, function (logs) {
                             drawTrip(logs);
-                            console.log(logs);
+                            //console.log(logs);
+                          });
+                    }
+                }, true);
+                
+                // Handle when end date is edited
+                dateTimeInputEnd.addEventListener("change", function (e) {
+                  
+                    var selectedTripId = tripsSelect.value,
+                        fullTrip = tripsById[selectedTripId]; 
+                    //console.log(this); 
+                    if (fullTrip) {
+                        getCustomLogs(fullTrip, dateTimeInput, dateTimeInputEnd, function (logs) {
+                            drawTrip(logs);
+                            //console.log(logs);
                           });
                     }
                 }, true);
